@@ -14,7 +14,6 @@ export default class Player {
 
   drawCard(card) {
     this._hand.push(card)
-    return this._hand
   }
 
   getPoints() {

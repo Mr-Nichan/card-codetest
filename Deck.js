@@ -69,6 +69,6 @@ export default class Deck {
   }
 
   dealCard() {
-    return this.cards.unshift()
+    return this.cards.shift()
   }
 }
