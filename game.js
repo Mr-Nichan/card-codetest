@@ -18,9 +18,15 @@ const presentPlayerStats = (player) => {
   for (const card of player.getHand()) {
     console.log(card.toString())
   }
-  console.log(`and has ${player.getPoints()} points`)
+
+  if (player.bust) {
+    console.log(`and went BUST with ${player.getPoints()} points. Bummer...`)
+  } else {
+    console.log(`and has ${player.getPoints()} points!`)
+  }
 }
 
+let playAgain = false
 const play = async () => {
   let deck
   let players = []
@@ -30,7 +36,12 @@ const play = async () => {
   await inq.prompt([{name: 'start', message: 'Lets play some BlackJack! Press the "any" key to start (if you can find it!)'}])
   
   // Game initialization to gather info about number of players and create them accordingly
-  await inq.prompt([{name: 'numPlayers', message: 'How many players wants to play? ', type: 'number' }])
+  await inq.prompt([{
+    name: 'numPlayers',
+    message: 'How many players wants to play? ',
+    type: 'list',
+    choices: [1, 2, 3, 4, 5]
+  }])
     .then(async a => {
       let numDecks = 1
       // Creating number of players and decks
@@ -61,21 +72,87 @@ const play = async () => {
   }
   
   // ------------------------------------------
-  // Start playing rounds
+  // Start playing rounds for players
   let roundFinished = false
-  while (!roundFinished) {
+  let exitGame = false
+  while (!roundFinished && !exitGame) {
     // Each player gets his round of Hit/Stand
     for (const player of players) {
+      console.log('\n\n---------------------')
+      console.log(`Player ${player.name}`)
+      console.log('---------------------')
+      while (!player.stand && !player.bust && !exitGame) {
+        presentPlayerStats(player)
+        await inq.prompt([{name: 'choice', message: 'Do you want to hit or stand?\n', type: 'list', choices: ['Hit', 'Stand', 'Restart Game', 'Chicken-out']}])
+          .then(a => {
+            if (a.choice === 'Hit') {
+              player.drawCard(deck.dealCard())
+
+              if (player.getPoints() > 21) player.setBust()
+              return
+            } else if (a.choice === 'Stand') {
+              player.setStand()
+              return
+            } else if (a.choice === 'Restart Game') {
+              exitGame = true
+              playAgain = true
+              return
+            } else if (a.choice === 'Chicken-out') {
+              exitGame = true
+              return
+            }
+          })
+
+        if (exitGame) {
+          break;
+        }
+      }
+
+      if (exitGame) {
+        break;
+      }
+
       presentPlayerStats(player)
     }
 
-    presentPlayerStats(dealer)
-
-    // if (players.every(player => player.stand)) {
-    //   roundFinished = true
-    // }
-    roundFinished = true
+    if (players.every(player => player.stand)) {
+      roundFinished = true
+    }
   }
+
+  if (exitGame) {
+    return
+  }
+
+  // --------------------------------------------
+  // Dealer plays
+  while (!dealer.stand && !dealer.bust) {
+    console.log('-------------------\nDealer´s turn\n')
+
+    if (dealer.getPoints < 17) {
+      dealer.drawCard(deck.dealCard())
+    } else if (dealer.getPoints > 21) {
+      dealer.setBust()
+    } else {
+      dealer.setStand()
+    }
+  }
+
+  if (dealer.bust) {
+    console.log('DEALER FUDGED UP AND LOST!')
+  } else {
+    console.log('Dealer stands:\n')
+  }
+  presentPlayerStats(dealer)
+
+
 }
 
-play()
+await play()
+
+if (playAgain) {
+  playAgain = false
+  await play()
+}
+
+console.log('Thanks for playing!')

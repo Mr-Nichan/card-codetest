@@ -2,6 +2,8 @@ export default class Player {
   constructor(name) {
     this.name = name
     this._hand = []
+    this.stand = false
+    this.bust = false
   }
 
   getName() {
@@ -14,6 +16,14 @@ export default class Player {
 
   drawCard(card) {
     this._hand.push(card)
+  }
+
+  setStand() {
+    this.stand = true
+  }
+
+  setBust() {
+    this.bust = true
   }
 
   getPoints() {
