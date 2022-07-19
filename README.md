@@ -38,3 +38,6 @@ The dealer's playing is rules based and will dictate whether or not a card shoul
 
 ### Who wins?
 As said before, the goal is to get as many points as possible but not exceed 21 points. And the points are then compared between the dealer and each individual player. Whoever between the two that gets the closest to 21 points wins.
+
+## Controls
+The CLI will take input from the command line and the player will be choosing alternatives by numbers to navigate the game start/setup. The player will be choosing how many players that will join the game and the number of decks used in the game will be automatically assigned depending on this so that the game will contain a suitable number of cards and not run out of cards mid game. During game play the player will either write "Hit" or "Stand" to do the corresponding. During any point of the game the player will be able to either write "Exit" to chicken out of the game or write "Restart" to chicken out just a little bit in the hopes of having the next round going better.
