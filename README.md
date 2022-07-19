@@ -1,5 +1,11 @@
 # bld card-codetest
 
+## Instructions
+
+Run `npm install` to install dependencies and then run `npm run start` to start gambling.
+
+[Stödlinjen](https://stodlinjen.se/)
+
 ## Introduction
 Setting up the project I first need to think about the choice of technology and then the CLI part. I'm thinking about picking Java or python for this since that lends itself very well to these types of applications. But I haven't coded in either Java nor Python in quite some time and the packaging to ease of use is e bit cumbersome compared to just using node.
 
