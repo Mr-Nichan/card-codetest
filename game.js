@@ -4,8 +4,7 @@ import Player from './Player.js'
 
 const inq = inquirer
 
-// await inq.prompt([{name: '', message: ''}])
-
+// Function to present the current hand and points of a player
 const presentPlayerStats = (player) => {
   console.log('-------------------')
   if (player.name === 'Dealer') {
@@ -79,15 +78,13 @@ const play = async () => {
     // Each player gets his round of Hit/Stand
     for (const player of players) {
       console.log('\n\n---------------------')
-      console.log(`Player ${player.name}`)
-      console.log('---------------------')
+      console.log(`Player ${player.name}'s turn`)
       while (!player.stand && !player.bust && !exitGame) {
         presentPlayerStats(player)
         await inq.prompt([{name: 'choice', message: 'Do you want to hit or stand?\n', type: 'list', choices: ['Hit', 'Stand', 'Restart Game', 'Chicken-out']}])
           .then(a => {
             if (a.choice === 'Hit') {
               player.drawCard(deck.dealCard())
-
               if (player.getPoints() > 21) player.setBust()
               return
             } else if (a.choice === 'Stand') {
@@ -115,7 +112,7 @@ const play = async () => {
       presentPlayerStats(player)
     }
 
-    if (players.every(player => player.stand)) {
+    if (players.every(player => player.stand || player.bust)) {
       roundFinished = true
     }
   }
@@ -126,10 +123,11 @@ const play = async () => {
 
   // --------------------------------------------
   // Dealer plays
+  console.log('\n\n---------------------')
+  console.log("Dealer's turn")
   while (!dealer.stand && !dealer.bust) {
-    console.log('-------------------\nDealer´s turn\n')
-
     if (dealer.getPoints < 17) {
+      console.log('DEALER HITS')
       dealer.drawCard(deck.dealCard())
     } else if (dealer.getPoints > 21) {
       dealer.setBust()
@@ -139,13 +137,20 @@ const play = async () => {
   }
 
   if (dealer.bust) {
-    console.log('DEALER FUDGED UP AND LOST!')
+    console.log('\nDEALER FUDGED UP AND LOST!')
   } else {
-    console.log('Dealer stands:\n')
+    console.log('DEALER STANDS\n\n')
   }
   presentPlayerStats(dealer)
 
+  // Points presentation and game end
+  
 
+  await inq.prompt([{name: 'again', message: 'Play again?', type: 'list', choices: ['Yes', 'No']}]).then((a) => {
+    if (a.again === 'Yes') {
+      playAgain = true
+    }
+  })
 }
 
 await play()
