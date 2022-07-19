@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Mr-Nichan/card-codetest/issues"
   },
-  "homepage": "https://github.com/Mr-Nichan/card-codetest#readme"
+  "homepage": "https://github.com/Mr-Nichan/card-codetest#readme",
+  "dependencies": {
+    "inquirer": "^9.0.1"
+  }
 }
