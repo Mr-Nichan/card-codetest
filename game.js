@@ -2,11 +2,29 @@ import inquirer from 'inquirer'
 import Deck from './Deck.js'
 import Player from './Player.js'
 
+const inq = inquirer
+
+// await inq.prompt([{name: '', message: ''}])
+
+const presentPlayerStats = (player) => {
+  console.log('-------------------')
+  if (player.name === 'Dealer') {
+    console.log(`The hand of the dealer contains:`)
+  } else {
+    console.log(`The hand of player ${player.name} contains:`)
+  }
+
+  // Loop out string value of hand
+  for (const card of player.getHand()) {
+    console.log(card.toString())
+  }
+  console.log(`and has ${player.getPoints()} points`)
+}
+
 const play = async () => {
   let deck
   let players = []
   const dealer = new Player('Dealer') // init of Dealer
-  const inq = inquirer
 
   // Welcome message
   await inq.prompt([{name: 'start', message: 'Lets play some BlackJack! Press the "any" key to start (if you can find it!)'}])
@@ -30,24 +48,34 @@ const play = async () => {
       deck = new Deck(numDecks)
     })
 
+  // ------------------------------------------
   // Deal first two cards to players and Dealer
   for (let i = 0; i < 2; i++) {
-    for (let n = 0; n < players.length; n++) [
+    for (let n = 0; n < players.length; n++) {
       players[n].drawCard(deck.dealCard())
-    ]
+    }
   }
 
-  // let roundFinished = false
-  // while (!roundFinished) {
-  //   for (player in players) {
-  //     console.log(player)
-  //   }
-  //   if (players.every(player => player.stand)) {
-  //     roundFinished = true
-  //   }
-  // }
+  for (let i = 0; i < 2; i++) {
+    dealer.drawCard(deck.dealCard())
+  }
+  
+  // ------------------------------------------
+  // Start playing rounds
+  let roundFinished = false
+  while (!roundFinished) {
+    // Each player gets his round of Hit/Stand
+    for (const player of players) {
+      presentPlayerStats(player)
+    }
 
-  console.log(players)
+    presentPlayerStats(dealer)
+
+    // if (players.every(player => player.stand)) {
+    //   roundFinished = true
+    // }
+    roundFinished = true
+  }
 }
 
 play()
