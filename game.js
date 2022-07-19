@@ -19,9 +19,9 @@ const presentPlayerStats = (player) => {
   }
 
   if (player.bust) {
-    console.log(`and went BUST with ${player.getPoints()} points. Bummer...`)
+    console.log(`and went BUST with ${player.getPoints()} points. Bummer...\n`)
   } else {
-    console.log(`and has ${player.getPoints()} points!`)
+    console.log(`and has ${player.getPoints()} points!\n`)
   }
 }
 
@@ -126,10 +126,10 @@ const play = async () => {
   console.log('\n\n---------------------')
   console.log("Dealer's turn")
   while (!dealer.stand && !dealer.bust) {
-    if (dealer.getPoints < 17) {
+    if (dealer.getPoints() < 17) {
       console.log('DEALER HITS')
       dealer.drawCard(deck.dealCard())
-    } else if (dealer.getPoints > 21) {
+    } else if (dealer.getPoints() > 21) {
       dealer.setBust()
     } else {
       dealer.setStand()
@@ -144,20 +144,31 @@ const play = async () => {
   presentPlayerStats(dealer)
 
   // Points presentation and game end
-  
+  console.log('AAAAND THE WINNER IIIIIS!!!!! *drumroll* ......')
+  await setTimeout(() => { // Setting some buildup for the great reveal
+    const allPlayers = [...players, dealer].filter(player => !player.bust) // filtering out players who went bust
+    let winner = allPlayers[0] || undefined
 
-  await inq.prompt([{name: 'again', message: 'Play again?', type: 'list', choices: ['Yes', 'No']}]).then((a) => {
-    if (a.again === 'Yes') {
-      playAgain = true
+    if (winner) {
+      for (const player of allPlayers) {
+        if (winner.getPoints() < player) { // Comparing the points for the players and replacing if higher points are found
+          winner = player
+        }
+      }
+
+      console.log(`${winner.name.toUpperCase()}!!!\n\n\n`)
+    } else {
+      console.log('No winner this time... sorry...\n\n\n')
     }
-  })
+
+    inq.prompt([{name: 'again', message: 'Play again?', type: 'list', choices: ['Yes', 'No']}]).then((a) => {
+      if (a.again === 'Yes') {
+        play()
+      } else {
+        console.log('Thanks for playing')
+      }
+    })
+  }, 3000)
 }
 
 await play()
-
-if (playAgain) {
-  playAgain = false
-  await play()
-}
-
-console.log('Thanks for playing!')
