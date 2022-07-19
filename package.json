@@ -2,8 +2,10 @@
   "name": "card-codetest",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "game.js",
   "scripts": {
+    "start": "node game.js",
     "test": "test"
   },
   "repository": {
