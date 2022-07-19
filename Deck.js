@@ -7,6 +7,7 @@ class Deck {
     this.cards = []
 
     // Loop over number of Decks to be initialized
+    const tempDeck = []
     for (let i = 0; i < decks; i++) {
       // loop over each face
       this._faces.forEach(face => {
@@ -23,15 +24,37 @@ class Deck {
         // Loop over each suit
         this._suits.forEach(suit => {
           // Push new card with configuration to deck
-          this.cards.push(new Card(face, suit, value))
+          tempDeck.push(new Card(face, suit, value))
         }) 
       })
     }
 
-    this._shuffleDeck()
+    this.cards = this._shuffleDeck(tempDeck)
   }
 
-  _shuffleDeck() {}
+  _shuffleDeck(array) {
+    const tmpArr = [...array]
+    // Using the fisher yates shuffle taken from StackOverflow
+    // Taking the current card
+    let currentIndex = tmpArr.length,  randomIndex
 
-  dealCard() {}
+    while (currentIndex != 0) {
+      // Picking a remaining card
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex--
+
+      // Swapping remaining card with current card
+      [tmpArr[currentIndex], tmpArr[randomIndex]] = [tmpArr[randomIndex], tmpArr[currentIndex]]
+    }
+
+    return tmpArr
+  }
+
+  getDeck() {
+    return this.cards.slice(0, 10)
+  }
+
+  dealCard() {
+    return this.cards.unshift()
+  }
 }
