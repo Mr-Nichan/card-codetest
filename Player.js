@@ -25,7 +25,7 @@ export default class Player {
       if (card.getValue === 11) {
         aces++
       }
-      points += card.getValue
+      points += card.getValue()
     }
 
     // If points exceeds 21 and there are aces on the hand subtract 10

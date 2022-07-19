@@ -15,4 +15,8 @@ export default class Card {
   getValue() {
     return this.value
   }
+
+  toString() {
+    return `${this.face} of ${this.suit}`
+  }
 }
