@@ -18,10 +18,23 @@ I need to think about what classes the project should consist of. this way I won
 Building classes for these three parts would be a good start. Then comes thinking about methods to be created in these classes to create the behavior we need in this game.
 
 ### Player
-The Player object needs to be initialized with a name, type of player (human/house), an empty hand, how much money being brought to the table and something to store the total current value of the hand.
+The Player object needs to be initialized with a name, type of player (human/house), an empty hand and something to store the total current value of the hand.
 
 ### Deck
 The Deck object needs to be able to initialize ie. create the cards with the correct number and values of cards. It then needs to be able to shuffle the cards. Lastly it needs to be able to deal a card to whomever requests a card.
 
 ### Card
 The Card object should only need to be initialized with a value, a face and a suit. I feel listing the reading of the value a bit redundant..
+
+## Logic
+
+Since this game is turn based the game will be built using loops and prompts halting these loops to collect the players wish to either hit or stand. At the start of each game the players are each dealt two cards facing up before the game begins. The dealer should be dealt one card facing up and one card facing down, but I'm all for transparency so I'll be going for every card in play being face up.
+
+#### Player
+Each player in order will then have the choice to either be dealt an additional card or to "Stand" and not receive more cards. Each player will try to get as close to 21 points as possible, if the value of the cards on hand exceeds 21 the player is bust and looses this round and should go stand in a dark corner contemplating his/her life decisions and what lead to them being here gambling away their kids savings account. When each player has had their turn hitting or standing it is the Dealer's (the house) turn to play.
+
+#### Dealer
+The dealer's playing is rules based and will dictate whether or not a card should be taken or not. If the dealer's hand has a total of 17 or more the dealer must stand. if it is below 17 the dealer must take a card until the total is 17 or more. If the dealer has an ace, and counting it as 11 would bring the total to 17 or more (but not over 21), the dealer must count the ace as 11 and stand.
+
+### Who wins?
+As said before, the goal is to get as many points as possible but not exceed 21 points. And the points are then compared between the dealer and each individual player. Whoever between the two that gets the closest to 21 points wins.
