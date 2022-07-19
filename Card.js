@@ -1,4 +1,4 @@
-class Card {
+export default class Card {
   // Initializing the card object with its params
   constructor(face, suit, value) {
     this.face = face
