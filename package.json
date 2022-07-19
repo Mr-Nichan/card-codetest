@@ -1,0 +1,19 @@
+{
+  "name": "card-codetest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "game.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mr-Nichan/card-codetest.git"
+  },
+  "author": "Nicklas Herrera Hansson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mr-Nichan/card-codetest/issues"
+  },
+  "homepage": "https://github.com/Mr-Nichan/card-codetest#readme"
+}
