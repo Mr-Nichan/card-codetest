@@ -18,14 +18,17 @@ export default class Player {
     this._hand.push(card)
   }
 
+  /// Feedback: This is game logic, state should not be kept in player
   setStand() {
     this.stand = true
   }
 
+  /// Feedback: Also game logic
   setBust() {
     this.bust = true
   }
 
+  /// Feedback: This calculation is game specific and should be kept in game.js
   getPoints() {
     // Loop through the cards and count points and number of aces
     let points = 0
@@ -43,6 +46,8 @@ export default class Player {
       aces--
       points -= 10
     }
+
+    /// Feedback: Like the aces approach!
 
     return points
   }

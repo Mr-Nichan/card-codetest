@@ -1,12 +1,37 @@
+/// Feedback: This is strictly speaking a specific game implementation. i.e. `BLACKJACK`.
+/// The assignment was to simulate a game of cards:
+/// Should have a Deck of Cards                                                             ✅
+/// Should be able to Shuffle Cards                                                         ✅
+/// Should be able to Deal an arbitrary number of cards to an arbitrary number of players   🤔
+/// -- This solution deals cards according to the rules of blackjack, which is not the same
+/// Should be able to show the cards each player has been dealt                             ✅
+/// Should be able to start over from the beginning                                         ✅
+///
+/// This solution also contains the following (unasked for) features                        🫥
+/// Should be a fully playable implementation of [`Any game of cards` OR `Blackjack`]       🫥
+/// Should have a `Dealer`                                                                  🫥
+/// Should have fully automated `Dealer` logic.                                             🫥
+/// Should have winners and losers                                                          🫥
+///
+/// My guess is that the 🫥-features took a majority of the time, and they were out of scope. 
+/// This assignment is equally about quality of implementation and scoping. The difference in cost
+/// for the original scope compared to the scope with the extra 🫥-features is substantial. 
+
+
+
+
+
 import inquirer from 'inquirer'
 import Deck from './Deck.js'
 import Player from './Player.js'
 
+/// Feedback: Good choice
 const inq = inquirer
 
 // Function to present the current hand and points of a player
 const presentPlayerStats = (player) => {
   console.log('-------------------')
+  
   if (player.name === 'Dealer') {
     console.log(`The hand of the dealer contains:`)
   } else {
@@ -46,6 +71,7 @@ const play = async () => {
       // Creating number of players and decks
       for (let i = 0; i < a.numPlayers; i++) {
         // Add one extra deck per every fourth player
+        /// Feedback: Elegant, while specific to blackjack!
         if (i % 4 === 0) {
           numDecks++
         }
@@ -95,6 +121,7 @@ const play = async () => {
               playAgain = true
               return
             } else if (a.choice === 'Chicken-out') {
+              /// Feedback: Not clear what this choice leads to. Should this end the game for all players? Seems pretty unfair. 
               exitGame = true
               return
             }
@@ -145,6 +172,8 @@ const play = async () => {
 
   // Points presentation and game end
   console.log('AAAAND THE WINNER IIIIIS!!!!! *drumroll* ......')
+  /// Feedback: Nice touch. However, isn't anyone who beats the dealer a winner, i.e. double their stake? 
+  /// Players don't compete against each other in BJ, only against the house?
   await setTimeout(() => { // Setting some buildup for the great reveal
     const allPlayers = [...players, dealer].filter(player => !player.bust) // filtering out players who went bust
     let winner = allPlayers[0] || undefined

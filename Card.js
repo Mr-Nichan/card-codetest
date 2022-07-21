@@ -1,3 +1,4 @@
+/// Feedback: On scope!
 export default class Card {
   // Initializing the card object with its params
   constructor(face, suit, value) {
